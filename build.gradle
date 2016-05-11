@@ -1,0 +1,21 @@
+group 'com.cmax'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+
+mainClassName = 'com.cmax.Main'
+sourceCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'com.google.code.gson:gson:2.6'
+    compile 'org.apache.httpcomponents:httpclient:4.5.2'
+
+}
+
