@@ -208,6 +208,23 @@ class TodoAPIWrapper {
         return null;
     }
 
+    public Todo putTodo(int id, String title, String body, int priority) {
+        Todo updTodo = new Todo(title, body, priority);
+        String url = hostURL + "/todos/api/v1.0/todo/update/" + id;
+        String contentType  = "application/json";
+        String putData = gson.toJson(updTodo);
+        try {
+            String response = requests.put(url,contentType,putData);
+            return gson.fromJson(response, Todo.class);
+        } catch (IOException e) {
+            System.out.println("Unable to put todo with id " + id);
+        }
+        return null;
+    }
+
+
+
+
     // get a todo by id
     public Todo getTodo(int id) {
         String url = hostURL + "/todos/api/v1.0/todo/" + id;
@@ -289,7 +306,7 @@ public class Main {
                     System.out.println("****** added ******");
                     break;
                 case 2:
-                    System.out.println("Enter the index of the contact to remove.");
+                    System.out.println("Enter the index of the task to remove.");
                     userInput = scanner.nextLine();
                     try { int x = ((int) Double.parseDouble(userInput));
                         todoAPI.removeTodo(x);}
@@ -298,8 +315,29 @@ public class Main {
                            }
                     break;
                 case 3:
-                     System.out.println("Update currently unavailable");
-                     System.out.println("Use delete & add as substitute");
+                    System.out.println("Enter the index of the task to update.");
+                    userInput = scanner.nextLine();
+                    try { int x = ((int) Double.parseDouble(userInput));
+                        }
+                    catch(NumberFormatException nfe){
+                        System.out.println(" invalid index ");
+                        break;
+                    }
+                    int x = ((int) Double.parseDouble(userInput));
+                    System.out.println("Enter the new task's name.");
+                    String utitle;
+                    utitle = scanner.nextLine();
+                    System.out.println("Enter the new task's description.");
+                    String ubody;
+                    ubody = scanner.nextLine();
+                    System.out.println("Enter the new task's priority");
+                    userInput = scanner.nextLine();
+                    int upri =0;
+                    try { upri = ((int) Double.parseDouble(userInput));}
+                    catch(NumberFormatException nfe){
+                        System.out.println("Pri must be between 1,2,3,4, or 5");
+                        userInput = "6";};
+                    todoAPI.putTodo(x,utitle, ubody, upri);
                     break;
                 case 4:
                     System.out.println("Getting a list of all tasks");
@@ -311,12 +349,12 @@ public class Main {
                 case 5:
                     System.out.println("Enter the priority you want to list:");
                     userInput = scanner.nextLine();
-                    try { int x = ((int) Double.parseDouble(userInput));
+                    try { int xx = ((int) Double.parseDouble(userInput));
 
                         TodoCollection todos2 = todoAPI.getTodos();
                         for (Todo todo: todos2) {
                             int getpri = todo.getPriority();
-                            if (x == getpri) {
+                            if (xx == getpri) {
                             System.out.println(todo);}
                         }
                     }
